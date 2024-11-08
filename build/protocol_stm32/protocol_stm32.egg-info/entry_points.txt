@@ -1,0 +1,3 @@
+[console_scripts]
+protocol_stm32 = protocol_stm32.protocol_stm32:main
+
