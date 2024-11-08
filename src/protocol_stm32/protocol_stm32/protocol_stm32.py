@@ -46,7 +46,7 @@ class Protocol_stm32_node(Node):
     def spin(self):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
             client_socket.connect(('192.168.5.100', 2007))
-            self.get_logger().info("Подключение к серверу (STM) успешно")
+            self.get_logger().info("Подключение к серверу STM успешно")
             try:
                 byte_string = Telemetry_Request(client_socket)
                 self.get_logger().info("Запрос телеметрии")
