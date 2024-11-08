@@ -1,0 +1,9 @@
+source;share/protocol_stm32/hook/pythonpath.ps1
+source;share/protocol_stm32/hook/pythonpath.dsv
+source;share/protocol_stm32/hook/pythonpath.sh
+source;share/protocol_stm32/hook/ament_prefix_path.ps1
+source;share/protocol_stm32/hook/ament_prefix_path.dsv
+source;share/protocol_stm32/hook/ament_prefix_path.sh
+source;../../build/protocol_stm32/share/protocol_stm32/hook/pythonpath_develop.ps1
+source;../../build/protocol_stm32/share/protocol_stm32/hook/pythonpath_develop.dsv
+source;../../build/protocol_stm32/share/protocol_stm32/hook/pythonpath_develop.sh
