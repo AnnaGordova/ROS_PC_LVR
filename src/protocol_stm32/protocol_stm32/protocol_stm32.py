@@ -51,6 +51,7 @@ class Protocol_stm32_node(Node):
                 byte_string = Telemetry_Request(client_socket)
                 self.get_logger().info("Запрос телеметрии")
                 self.get_logger().info("Ответ сервера: " + byte_string)
+                self.get_logger().info(f"Длина строки: {len(byte_string)}")
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
