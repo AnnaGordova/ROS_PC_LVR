@@ -1,0 +1,20 @@
+[0.598s] Invoking command in '/home/robot/ros2_ws/build/protocol_stm32': PYTHONPATH=/home/robot/ros2_ws/build/protocol_stm32/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/robot/ros2_ws/install/protocol_stm32/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/robot/ros2_ws/build/protocol_stm32/build --no-deps symlink_data
+[0.838s] running develop
+[0.839s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.839s]   warnings.warn(
+[0.978s] running egg_info
+[0.978s] writing protocol_stm32.egg-info/PKG-INFO
+[0.978s] writing dependency_links to protocol_stm32.egg-info/dependency_links.txt
+[0.979s] writing entry points to protocol_stm32.egg-info/entry_points.txt
+[0.979s] writing requirements to protocol_stm32.egg-info/requires.txt
+[0.979s] writing top-level names to protocol_stm32.egg-info/top_level.txt
+[0.981s] reading manifest file 'protocol_stm32.egg-info/SOURCES.txt'
+[0.982s] writing manifest file 'protocol_stm32.egg-info/SOURCES.txt'
+[0.983s] running build_ext
+[0.984s] Creating /home/robot/ros2_ws/install/protocol_stm32/lib/python3.10/site-packages/protocol-stm32.egg-link (link to .)
+[0.985s] Installing heartbeat script to /home/robot/ros2_ws/install/protocol_stm32/lib/protocol_stm32
+[0.985s] Installing protocol_stm32 script to /home/robot/ros2_ws/install/protocol_stm32/lib/protocol_stm32
+[0.985s] 
+[0.985s] Installed /home/robot/ros2_ws/build/protocol_stm32
+[0.985s] running symlink_data
+[1.017s] Invoked command in '/home/robot/ros2_ws/build/protocol_stm32' returned '0': PYTHONPATH=/home/robot/ros2_ws/build/protocol_stm32/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/robot/ros2_ws/install/protocol_stm32/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/robot/ros2_ws/build/protocol_stm32/build --no-deps symlink_data

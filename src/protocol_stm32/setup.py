@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-		"protocol_stm32 = protocol_stm32.protocol_stm32:main"
+		"protocol_stm32 = protocol_stm32.protocol_stm32:main",
+		"heartbeat = protocol_stm32.heartbeat:main"
         ],
     },
 )

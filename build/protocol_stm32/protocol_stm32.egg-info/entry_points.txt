@@ -1,3 +1,4 @@
 [console_scripts]
+heartbeat = protocol_stm32.heartbeat:main
 protocol_stm32 = protocol_stm32.protocol_stm32:main
 

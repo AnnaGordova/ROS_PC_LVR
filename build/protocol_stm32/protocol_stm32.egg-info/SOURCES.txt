@@ -9,6 +9,7 @@ setup.py
 ../../build/protocol_stm32/protocol_stm32.egg-info/top_level.txt
 ../../build/protocol_stm32/protocol_stm32.egg-info/zip-safe
 protocol_stm32/__init__.py
+protocol_stm32/heartbeat.py
 protocol_stm32/protocol_stm32.py
 protocol_stm32.egg-info/PKG-INFO
 protocol_stm32.egg-info/SOURCES.txt
