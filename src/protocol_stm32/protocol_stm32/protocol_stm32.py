@@ -13,6 +13,7 @@ def Telemetry_Request(sock):
     sock.sendall(request_message)
     # Получаем ответ от сервера
     response_message = sock.recv(1024).hex() # 1024?
+    print('ответ получен')
     return response_message
 
 
@@ -80,6 +81,6 @@ def main(args=None):
 
 
 # Запуск с терминала (перед сделать source ~/.bashrc)
-# ros2 run lvr_project protocol_stm32
+# ros2 run protocol_stm32 protocol_stm32
 if __name__ == '__main__':
     main()
