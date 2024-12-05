@@ -12,8 +12,7 @@ def Telemetry_Request(sock):
     request_message = bytes.fromhex('C0')
     sock.sendall(request_message)
     # Получаем ответ от сервера
-    response_message = sock.recv(1024).hex() # 1024?
-    print('ответ получен')
+    response_message = sock.recv(82) # 1024?
     return response_message
 
 
@@ -32,17 +31,15 @@ class Protocol_stm32_node(Node):
         h - int16_t
         '''
 
-        self.host = ''
-        self.port = 2007
-
-        self.addr = '192.168.5.100'
-
+        
+        '''
         self.format_type = "=H"
         self.format_heartbeat = "=H"
         self.format_motors = "=Hffff"
         self.format_telemetry_request = "=H"
         self.format_telemetry_answer = "=Hfffffffffhhhhf?fffff"
-        self.format_unknown_packet = "=H"  
+        self.format_unknown_packet = "=H"  '''
+        self.format_telemetry = "=Bfffffffffhhhhhhhhhhf?fffff"
 
     def spin(self):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
@@ -50,9 +47,16 @@ class Protocol_stm32_node(Node):
             self.get_logger().info("Подключение к серверу STM успешно")
             try:
                 byte_string = Telemetry_Request(client_socket)
-                self.get_logger().info("Запрос телеметрии")
-                self.get_logger().info("Ответ сервера: " + byte_string)
-                self.get_logger().info(f"Длина строки: {len(byte_string)}")
+                self.get_logger().info("Ответ телеметрии получен")
+                print(struct.calcsize(self.format_telemetry))
+                print(byte_string)
+                print(struct.calcsize(self.format_telemetry))
+                data = struct.unpack(byte_string, self.format_telemetry)
+                print(data)
+                #print(struct.calcsize(self.format_telemetry))
+                #byte = struct.pack(byte_string, 'utf-8')
+                #data = struct.unpack(byte, self.format_telemetry)
+                #print(data)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
