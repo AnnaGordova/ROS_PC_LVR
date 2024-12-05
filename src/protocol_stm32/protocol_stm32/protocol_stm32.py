@@ -8,10 +8,8 @@ def Telemetry_Request(sock):
     """
     Возвращает ответ телеметрии в виде байтовой строки
     """
-    # Отправляем запрос серверу
     request_message = bytes.fromhex('C0')
     sock.sendall(request_message)
-    # Получаем ответ от сервера
     response_message = sock.recv(82) # 1024?
     return response_message
 
@@ -37,7 +35,6 @@ class Protocol_stm32_node(Node):
         self.format_heartbeat = "=H"
         self.format_motors = "=Hffff"
         self.format_telemetry_request = "=H"
-        self.format_telemetry_answer = "=Hfffffffffhhhhf?fffff"
         self.format_unknown_packet = "=H"  '''
         self.format_telemetry = "=Bfffffffffhhhhhhhhhhf?fffff"
 
@@ -49,32 +46,20 @@ class Protocol_stm32_node(Node):
                 byte_string = Telemetry_Request(client_socket)
                 self.get_logger().info("Ответ телеметрии получен")
                 print(struct.calcsize(self.format_telemetry))
-                print(byte_string)
-                print(struct.calcsize(self.format_telemetry))
-                data = struct.unpack(byte_string, self.format_telemetry)
-                print(data)
-                #print(struct.calcsize(self.format_telemetry))
-                #byte = struct.pack(byte_string, 'utf-8')
-                #data = struct.unpack(byte, self.format_telemetry)
-                #print(data)
+                
+                data = struct.unpack(self.format_telemetry, byte_string)
+
+                telemetry_keys = ['type', 'ax', 'ay', 'az', 'gx', 'gy', 'gz', 'roll', 'yaw', 'pitch',
+                                  'fl_cmd', 'fr_cmd', 'bl_cmd', 'br_cmd', 'fl_speed', 'fr_speed', 'bl_speed',
+                                  'br_speed', 'boardf_temp', 'boardb_temp', 'bat_value', 'gps_valid',
+                                  'latitude', 'longitude', 'speed', 'course', 'variation']
+                telemetry_info = {}
+                for i in range(len(data)):
+                    telemetry_info[telemetry_keys[i]] = data[i]
+                print(telemetry_info)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
-            '''
-            d = s.recvfrom(1)
-            self.get_logger().info("Hello from ROS2")
-            d = struct.unpack(self.format_type)
-
-            if d == "0xAA":  # hearbeat?
-                d = s.recvfrom(1)
-                pass
-            elif d == "0xB0":  # motors?
-                d = s.recvfrom(5)
-                pass
-            elif d == "0xC0":  # telem?
-                pass
-            elif d == "0xFF":  # unknown?
-                pass'''
 
 
 def main(args=None):
@@ -84,7 +69,7 @@ def main(args=None):
     rclpy.shutdown()
 
 
-# Запуск с терминала (перед сделать source ~/.bashrc)
+# Запуск с терминала (перед сделать source ~/.bashrc) если что-то не робит
 # ros2 run protocol_stm32 protocol_stm32
 if __name__ == '__main__':
     main()
