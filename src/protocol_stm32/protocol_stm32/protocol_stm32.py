@@ -3,6 +3,29 @@ import rclpy
 import socket
 import struct
 from rclpy.node import Node
+from geometry_msgs.msg import Quaternion
+import numpy as np  
+
+
+def Calculate_quaternion(roll, pitch, yaw):
+    """
+    Конвертирует углы Эйлера в квартернион
+
+    Input
+      :param roll: The roll (rotation around x-axis) angle in radians.
+      :param pitch: The pitch (rotation around y-axis) angle in radians.
+      :param yaw: The yaw (rotation around z-axis) angle in radians.
+
+    Output
+      :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
+    """
+    qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(roll / 2) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2)
+    qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2)
+    qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(roll / 2) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    Q = Quaternion(x = qx, y = qy, z = qz, w = qw)
+    return Q
+
 
 def Telemetry_Request(sock):
     """
@@ -55,7 +78,9 @@ class Protocol_stm32_node(Node):
             try:
                 telemetry_data = Telemetry_Request(client_socket)
                 self.get_logger().info("Телеметрия получена")
+                q = Calculate_quaternion(telemetry_data['roll'], telemetry_data['pitch'], telemetry_data['yaw'])
                 print(telemetry_data)
+                print(q)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
