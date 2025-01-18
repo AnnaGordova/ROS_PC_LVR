@@ -4,7 +4,8 @@ import socket
 import struct
 from rclpy.node import Node
 from geometry_msgs.msg import Quaternion, Vector3
-from sensor_msgs.msg import Imu, BatteryState
+from sensor_msgs.msg import Imu, BatteryState, NavSatStatus, NavSatFix
+#from automotive_platform_msgs.msg import Speed
 import numpy as np
 from math import radians
 from time import sleep
@@ -12,6 +13,10 @@ from time import sleep
 def rad_per_sec(grad_per_sec):
     """Переводит градусы в секеунду в радианы в секунду"""
     return grad_per_sec*0.01745329
+
+def meter_per_second(nodal_speed):
+    """Переводит узлы в метры в секунду"""
+    return nodal_speed*0.51444444444
 
 def Calculate_quaternion(r, p, y):
     """
@@ -62,6 +67,27 @@ def Battery_converter(td):
     battery_msg.voltage = td['bat_value']
     return battery_msg
 
+'''
+def Speed_converter(td):
+    """ Получает на вход словарь телеметрии и создает Speed.msg"""
+    speed_msg = Speed()
+    speed_msg.speed = meter_per_second(td['speed'])
+    speed_msg.acceleration_limit = 1.0
+    speed_msg.deceleration_limit = -1.0
+    return speed_msg'''
+
+def Nav_converter(td):
+    """ Получает на вход словарь телеметрии и создает NavSatFix.msg"""
+    status_msg = NavSatStatus()
+    status_msg.status = int(td['gps_valid'])
+
+    nav_sat_fix_msg = NavSatFix()
+    nav_sat_fix_msg.latitude = td['latitude']
+    nav_sat_fix_msg.longitude = td['longitude']
+    nav_sat_fix_msg.status = status_msg
+
+    return nav_sat_fix_msg
+
 
 def Telemetry_Request(sock):
     """
@@ -86,16 +112,11 @@ def Telemetry_Request(sock):
 class Protocol_stm32_node(Node):
     def __init__(self):
         super().__init__("Protocol_stm32_node")
-        # self.get_logger().info("Hello from ROS2")
-        #self.pub_motors = self.create_publisher("....")
-        #self.pub_telem = self.create_publisher("....")
-        #self.sub_telem_vel = self.create_publisher("....")
-        #self.sub_telem_speed = self.create_publisher("....")
-        #self.sub_telem_gps = self.create_publisher("....")
 
         self.imu_publisher_ = self.create_publisher(Imu, '/imu_topic', 10)
         self.battery_publisher_ = self.create_publisher(BatteryState, '/battery_topic', 10)
-
+        #self.speed_publisher_ = self.create_publisher(Speed, '/speed_topic', 10)
+        self.nav_publisher_ = self.create_publisher(NavSatFix, '/nav_topic', 10)
 
         '''
         H - uint8_t
@@ -123,13 +144,19 @@ class Protocol_stm32_node(Node):
                 print(telemetry_data)
                 Imu_msg = Imu_converter(telemetry_data)
                 Battery_msg = Battery_converter(telemetry_data)
-                print(Battery_msg)
+                #Speed_msg = Speed_converter(telemetry_data)
+                #print(Speed_msg)
+                NavSatFix_msg = Nav_converter(telemetry_data)
                 while True:
                     self.imu_publisher_.publish(Imu_msg)
                     self.get_logger().info('Imu.msg published')
 
                     self.battery_publisher_.publish(Battery_msg)
                     self.get_logger().info('BatteryState.msg published')
+
+                    self.nav_publisher_.publish(NavSatFix_msg)
+                    self.get_logger().info('NavSatFix.msg published')
+                    
                     sleep(1)
             finally:
                 # Закрываем клиентский сокет
