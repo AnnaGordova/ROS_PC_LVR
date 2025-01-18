@@ -7,6 +7,7 @@ from geometry_msgs.msg import Quaternion, Vector3
 from sensor_msgs.msg import Imu
 import numpy as np
 from math import radians
+from time import sleep
 
 def rad_per_sec(grad_per_sec):
     """Переводит градусы в секеунду в радианы в секунду"""
@@ -53,7 +54,7 @@ def Imu_converter(td):
     imu_msg.linear_acceleration = linear_acceleration
     imu_msg.linear_acceleration_covariance = linear_acceleration_covariance
 
-    print(imu_msg)
+    return imu_msg
     
 
 
@@ -86,6 +87,10 @@ class Protocol_stm32_node(Node):
         #self.sub_telem_vel = self.create_publisher("....")
         #self.sub_telem_speed = self.create_publisher("....")
         #self.sub_telem_gps = self.create_publisher("....")
+
+        self.imu_publisher_ = self.create_publisher(Imu, '/imu_topic', 10)
+
+
         '''
         H - uint8_t
         f - float
@@ -100,6 +105,8 @@ class Protocol_stm32_node(Node):
         self.format_telemetry_request = "=H"
         self.format_unknown_packet = "=H"  '''
 
+    def listener_callback(self, msg):
+        self.get_logger().info('i heard: "%s"' %msg.data)
 
     def spin(self):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
@@ -109,7 +116,11 @@ class Protocol_stm32_node(Node):
                 telemetry_data = Telemetry_Request(client_socket)
                 self.get_logger().info("Телеметрия получена")
                 print(telemetry_data)
-                Imu_converter(telemetry_data)
+                Imu_msg = Imu_converter(telemetry_data)
+                while True:
+                    self.imu_publisher_.publish(Imu_msg)
+                    self.get_logger().info('Imu.msg published')
+                    sleep(1)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
