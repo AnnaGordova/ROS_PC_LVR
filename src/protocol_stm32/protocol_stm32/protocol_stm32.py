@@ -4,18 +4,22 @@ import socket
 import struct
 from rclpy.node import Node
 from geometry_msgs.msg import Quaternion, Vector3
+from sensor_msgs.msg import Imu
 import numpy as np
 from math import radians
 
+def rad_per_sec(grad_per_sec):
+    """Переводит градусы в секеунду в радианы в секунду"""
+    return grad_per_sec*0.01745329
 
 def Calculate_quaternion(r, p, y):
     """
-    Конвертирует углы Эйлера в квартернион
+    Конвертирует углы Эйлера в квартернион, предварительно переведя градусы в радианы
 
     Input
-      :param roll: The roll (rotation around x-axis) angle in radians.
-      :param pitch: The pitch (rotation around y-axis) angle in radians.
-      :param yaw: The yaw (rotation around z-axis) angle in radians.
+      :param roll: The roll (rotation around x-axis) angle в градусах
+      :param pitch: The pitch (rotation around y-axis) angle в градусах
+      :param yaw: The yaw (rotation around z-axis) angle в градусах
 
     Output
       :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
@@ -31,15 +35,27 @@ def Calculate_quaternion(r, p, y):
 
 def Imu_converter(td):
     """ Получает на вход словарь телеметрии и создает Imu.msg"""
-    #geometry_msgs/Quaternion
-    quaternion = Calculate_quaternion(td['roll'], td['pitch'], td['yaw'])
-    #geometry_msgs/Vector3 (angular_velocity)
-    angular_velocity = Vector3()
-    angular_velocity.x = 1.0
-    angular_velocity.y = 2.0
-    angular_velocity.z = 3.0
-    #geometry_msgs/Vector3 (linear_acceleration
-    print(angular_velocity)
+    #geometry_msgs/Quaternion and empty_covariance
+    orientation = Calculate_quaternion(td['roll'], td['pitch'], td['yaw'])
+    orientation_covariance = [0.0] * 9 #ВОЗМОЖНО ПОМЕНЯТЬ
+    #geometry_msgs/Vector3 (angular_velocity) and empty_covariance
+    angular_velocity = Vector3(x=rad_per_sec(td['gx']), y=rad_per_sec(td['gy']), z=rad_per_sec(td['gz']))
+    angular_velocity_covariance = [0.0] * 9 #ВОЗМОЖНО ПОМЕНЯТЬ
+    #geometry_msgs/Vector3 (linear_acceleration) and empty_covariance
+    linear_acceleration = Vector3(x=td['ax'], y=td['ay'], z=td['az'])
+    linear_acceleration_covariance = [0.0] * 9 #ВОЗМОЖНО ПОМЕНЯТЬ
+
+    imu_msg = Imu()
+    imu_msg.orientation = orientation
+    imu_msg.orientation_covariance = orientation_covariance
+    imu_msg.angular_velocity = angular_velocity
+    imu_msg.angular_velocity_covariance = angular_velocity_covariance
+    imu_msg.linear_acceleration = linear_acceleration
+    imu_msg.linear_acceleration_covariance = linear_acceleration_covariance
+
+    print(imu_msg)
+    
+
 
 def Telemetry_Request(sock):
     """
@@ -93,9 +109,7 @@ class Protocol_stm32_node(Node):
                 telemetry_data = Telemetry_Request(client_socket)
                 self.get_logger().info("Телеметрия получена")
                 print(telemetry_data)
-                q =Calculate_quaternion(telemetry_data['roll'], telemetry_data['pitch'], telemetry_data['yaw'])
-                print(q)
-                #Imu_converter(telemetry_data)
+                Imu_converter(telemetry_data)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
