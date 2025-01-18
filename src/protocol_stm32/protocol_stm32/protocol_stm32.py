@@ -3,11 +3,12 @@ import rclpy
 import socket
 import struct
 from rclpy.node import Node
-from geometry_msgs.msg import Quaternion
-import numpy as np  
+from geometry_msgs.msg import Quaternion, Vector3
+import numpy as np
+from math import radians
 
 
-def Calculate_quaternion(roll, pitch, yaw):
+def Calculate_quaternion(r, p, y):
     """
     Конвертирует углы Эйлера в квартернион
 
@@ -19,6 +20,7 @@ def Calculate_quaternion(roll, pitch, yaw):
     Output
       :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
     """
+    roll, pitch, yaw = radians(r), radians(p), radians(y)
     qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(roll / 2) * np.sin(pitch / 2) * np.sin(yaw / 2)
     qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2)
     qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2)
@@ -26,6 +28,18 @@ def Calculate_quaternion(roll, pitch, yaw):
     Q = Quaternion(x = qx, y = qy, z = qz, w = qw)
     return Q
 
+
+def Imu_converter(td):
+    """ Получает на вход словарь телеметрии и создает Imu.msg"""
+    #geometry_msgs/Quaternion
+    quaternion = Calculate_quaternion(td['roll'], td['pitch'], td['yaw'])
+    #geometry_msgs/Vector3 (angular_velocity)
+    angular_velocity = Vector3()
+    angular_velocity.x = 1.0
+    angular_velocity.y = 2.0
+    angular_velocity.z = 3.0
+    #geometry_msgs/Vector3 (linear_acceleration
+    print(angular_velocity)
 
 def Telemetry_Request(sock):
     """
@@ -78,9 +92,10 @@ class Protocol_stm32_node(Node):
             try:
                 telemetry_data = Telemetry_Request(client_socket)
                 self.get_logger().info("Телеметрия получена")
-                q = Calculate_quaternion(telemetry_data['roll'], telemetry_data['pitch'], telemetry_data['yaw'])
                 print(telemetry_data)
+                q =Calculate_quaternion(telemetry_data['roll'], telemetry_data['pitch'], telemetry_data['yaw'])
                 print(q)
+                #Imu_converter(telemetry_data)
             finally:
                 # Закрываем клиентский сокет
                 client_socket.close()
