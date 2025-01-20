@@ -21,10 +21,10 @@ class Driver_node(Node):
     def spin(self):
 
         while True:
-            fl_msg = Create_msg(0.1)
-            fr_msg = Create_msg(0.0)
-            bl_msg = Create_msg(0.0)
-            br_msg = Create_msg(0.0)
+            fl_msg = Create_msg(100.0)
+            fr_msg = Create_msg(100.0)
+            bl_msg = Create_msg(100.0)
+            br_msg = Create_msg(100.0)
 
             self.fl_publisher_.publish(fl_msg)
             self.get_logger().info('fl_msg published')
@@ -35,7 +35,7 @@ class Driver_node(Node):
             self.br_publisher_.publish(br_msg)
             self.get_logger().info('br_msg published')
             self.get_logger().info("-------------------------")
-            sleep(1)
+            sleep(0.01)
 
 
 

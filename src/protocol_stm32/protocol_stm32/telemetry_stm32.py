@@ -139,15 +139,17 @@ class Protocol_stm32_node(Node):
             client_socket.connect(('192.168.5.100', 2007))
             self.get_logger().info("Подключение к серверу STM успешно")
             try:
-                telemetry_data = Telemetry_Request(client_socket)
-                self.get_logger().info("Телеметрия получена")
-                print(telemetry_data)
-                Imu_msg = Imu_converter(telemetry_data)
-                Battery_msg = Battery_converter(telemetry_data)
-                #Speed_msg = Speed_converter(telemetry_data)
-                #print(Speed_msg)
-                NavSatFix_msg = Nav_converter(telemetry_data)
+
                 while True:
+                    telemetry_data = Telemetry_Request(client_socket)
+                    self.get_logger().info("Телеметрия получена")
+                    print(telemetry_data)
+                    Imu_msg = Imu_converter(telemetry_data)
+                    Battery_msg = Battery_converter(telemetry_data)
+                    # Speed_msg = Speed_converter(telemetry_data)
+                    # print(Speed_msg)
+                    NavSatFix_msg = Nav_converter(telemetry_data)
+                    
                     self.imu_publisher_.publish(Imu_msg)
                     self.get_logger().info('Imu.msg published')
 
@@ -159,6 +161,7 @@ class Protocol_stm32_node(Node):
                     
                     sleep(1)
             finally:
+                self.get_logger().info("Ошибка")
                 # Закрываем клиентский сокет
                 client_socket.close()
 

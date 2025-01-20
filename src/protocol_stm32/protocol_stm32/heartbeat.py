@@ -28,8 +28,8 @@ class Heartbeat_node(Node):
                 try:
                     Heartbeat_Response(client_socket)
                     self.get_logger().info(f"heartbeat отправлен -- {str(self.seconds)} секунд")
-                    time.sleep(0.5)
-                    self.seconds += 0.5
+                    time.sleep(0.3)
+                    self.seconds += 0.3
                 finally:
                     pass
                   
