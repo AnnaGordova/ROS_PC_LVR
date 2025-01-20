@@ -5,6 +5,7 @@ from rcl_interfaces.msg import ParameterValue
 from time import sleep
 
 def Create_msg(v):
+    """Создает сообщение типа ParameterValue, на вход получает скорость на колесоо"""
     param_value_msg = ParameterValue()
     param_value_msg.type = 3  # double тип
     param_value_msg.double_value = v

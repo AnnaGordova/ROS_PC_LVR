@@ -5,7 +5,7 @@ import struct
 from rclpy.node import Node
 from geometry_msgs.msg import Quaternion, Vector3
 from sensor_msgs.msg import Imu, BatteryState, NavSatStatus, NavSatFix
-#from automotive_platform_msgs.msg import Speed
+from rcl_interfaces.msg import ParameterValue
 import numpy as np
 from math import radians
 from time import sleep
@@ -67,14 +67,13 @@ def Battery_converter(td):
     battery_msg.voltage = td['bat_value']
     return battery_msg
 
-'''
+
 def Speed_converter(td):
-    """ Получает на вход словарь телеметрии и создает Speed.msg"""
-    speed_msg = Speed()
-    speed_msg.speed = meter_per_second(td['speed'])
-    speed_msg.acceleration_limit = 1.0
-    speed_msg.deceleration_limit = -1.0
-    return speed_msg'''
+    """ Получает на вход словарь телеметрии и создает ParameterValue.msg для скорости"""
+    speed_msg = ParameterValue()
+    speed_msg.type = 3 #double type
+    speed_msg.double_value = meter_per_second(td['speed'])
+    return speed_msg
 
 def Nav_converter(td):
     """ Получает на вход словарь телеметрии и создает NavSatFix.msg"""
@@ -88,6 +87,12 @@ def Nav_converter(td):
 
     return nav_sat_fix_msg
 
+def Course_converter(td):
+    """ Получает на вход словарь телеметрии и создает ParameterValue.msg для курса"""
+    course_msg = ParameterValue()
+    course_msg.type = 3 #double type
+    course_msg.double_value = td['course']
+    return course_msg
 
 def Telemetry_Request(sock):
     """
@@ -115,8 +120,9 @@ class Protocol_stm32_node(Node):
 
         self.imu_publisher_ = self.create_publisher(Imu, '/imu_topic', 10)
         self.battery_publisher_ = self.create_publisher(BatteryState, '/battery_topic', 10)
-        #self.speed_publisher_ = self.create_publisher(Speed, '/speed_topic', 10)
+        self.speed_publisher_ = self.create_publisher(ParameterValue, '/speed_topic', 10)
         self.nav_publisher_ = self.create_publisher(NavSatFix, '/nav_topic', 10)
+        self.course_publisher_ = self.create_publisher(ParameterValue, '/course_topic', 10)
 
         '''
         H - uint8_t
@@ -144,11 +150,12 @@ class Protocol_stm32_node(Node):
                     telemetry_data = Telemetry_Request(client_socket)
                     self.get_logger().info("Телеметрия получена")
                     print(telemetry_data)
+
                     Imu_msg = Imu_converter(telemetry_data)
                     Battery_msg = Battery_converter(telemetry_data)
-                    # Speed_msg = Speed_converter(telemetry_data)
-                    # print(Speed_msg)
+                    Speed_msg = Speed_converter(telemetry_data)
                     NavSatFix_msg = Nav_converter(telemetry_data)
+                    Course_msg = Course_converter(telemetry_data)
                     
                     self.imu_publisher_.publish(Imu_msg)
                     self.get_logger().info('Imu.msg published')
@@ -156,9 +163,14 @@ class Protocol_stm32_node(Node):
                     self.battery_publisher_.publish(Battery_msg)
                     self.get_logger().info('BatteryState.msg published')
 
+                    self.speed_publisher_.publish(Speed_msg)
+                    self.get_logger().info('ParameterValue.msg for speed published')
+
                     self.nav_publisher_.publish(NavSatFix_msg)
                     self.get_logger().info('NavSatFix.msg published')
-                    
+
+                    self.course_publisher_.publish(Course_msg)
+                    self.get_logger().info('ParameterValue.msg for course published')
                     sleep(1)
             finally:
                 self.get_logger().info("Ошибка")
@@ -174,6 +186,6 @@ def main(args=None):
 
 
 # Запуск с терминала (перед сделать source ~/.bashrc) если что-то не робит
-# ros2 run protocol_stm32 protocol_stm32
+# ros2 run protocol_stm32 telemetry_stm32
 if __name__ == '__main__':
     main()
