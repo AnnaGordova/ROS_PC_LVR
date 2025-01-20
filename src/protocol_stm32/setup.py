@@ -21,7 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
 		"telemetry_stm32 = protocol_stm32.telemetry_stm32:main",
-		"heartbeat = protocol_stm32.heartbeat:main"
+		"heartbeat = protocol_stm32.heartbeat:main",
+		"driver = protocol_stm32.driver:main",
+		"driver_stm32 = protocol_stm32.driver_stm32:main"
         ],
     },
 )

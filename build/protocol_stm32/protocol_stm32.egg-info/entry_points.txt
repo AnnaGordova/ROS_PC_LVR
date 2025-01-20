@@ -1,4 +1,6 @@
 [console_scripts]
+driver = protocol_stm32.driver:main
+driver_stm32 = protocol_stm32.driver_stm32:main
 heartbeat = protocol_stm32.heartbeat:main
 telemetry_stm32 = protocol_stm32.telemetry_stm32:main
 
