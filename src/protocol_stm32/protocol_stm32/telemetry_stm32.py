@@ -3,12 +3,13 @@ import rclpy
 import socket
 import struct
 from rclpy.node import Node
-from geometry_msgs.msg import Quaternion, Vector3
+from geometry_msgs.msg import Quaternion, Vector3, PoseWithCovariance, TwistWithCovariance
 from sensor_msgs.msg import Imu, BatteryState, NavSatStatus, NavSatFix
+from nav_msgs.msg import Odometry
 from rcl_interfaces.msg import ParameterValue
 import numpy as np
-from math import radians
-from time import sleep
+from math import radians, cos, sin
+from time import sleep, time
 
 def rad_per_sec(grad_per_sec):
     """Переводит градусы в секеунду в радианы в секунду"""
@@ -94,6 +95,35 @@ def Course_converter(td):
     course_msg.double_value = td['course']
     return course_msg
 
+def Odometry_converter(td, dt, prev_x, prev_y):
+    """ Получает на вход словарь телеметрии, интервал времени и предыдщие значения
+    положения в пространстве. Возвращает Odometry.msg и новые координаты в пространстве"""
+    v_left = td['fl_speed']
+    v_right = td['fr_speed']
+    yaw = td['yaw']
+    v = (v_left + v_right) / 2 #УЗНАТЬ ЕДИНИЦЫ ИЗМЕРЕНИЯ СКОРОСТЕЙ И ПЕРЕВЕСТИ В М/С!!
+
+    x = prev_x + v*cos(yaw)*dt
+    y = prev_y + v*sin(yaw)*dt
+
+    odometry_msg = Odometry()
+    odometry_msg.child_frame_id = "base_link"
+    odometry_msg.pose.pose.position.x = x
+    odometry_msg.pose.pose.position.y = y
+
+    odometry_msg.pose.pose.orientation = Calculate_quaternion(td['roll'], td['pitch'], td['yaw'])
+    odometry_msg.twist.twist.linear.x = v * cos(yaw)
+    odometry_msg.twist.twist.linear.y = v * sin(yaw)
+
+    odometry_msg.twist.twist.angular.x = rad_per_sec(td['gx'])
+    odometry_msg.twist.twist.angular.y = rad_per_sec(td['gy'])
+    odometry_msg.twist.twist.angular.z = rad_per_sec(td['gz'])
+
+
+    return {'odometry_msg': odometry_msg, 'x_new': x, 'y_new': y}
+
+
+
 def Telemetry_Request(sock):
     """
     Возвращает данные телеметрии в виде словаря
@@ -123,7 +153,15 @@ class Protocol_stm32_node(Node):
         self.speed_publisher_ = self.create_publisher(ParameterValue, '/speed_topic', 10)
         self.nav_publisher_ = self.create_publisher(NavSatFix, '/nav_topic', 10)
         self.course_publisher_ = self.create_publisher(ParameterValue, '/course_topic', 10)
+        self.odometry_publisher_ = self.create_publisher(Odometry, '/odometry_topic', 10)
 
+        self.prev_time = time()
+        self.curr_time = -1.
+        self.dt = 0.
+
+        self.x = 0.
+        self.y = 0.
+        self.L = 0.58 #58 см - расстояние между колесами
         '''
         H - uint8_t
         f - float
@@ -148,7 +186,10 @@ class Protocol_stm32_node(Node):
 
                 while True:
                     telemetry_data = Telemetry_Request(client_socket)
+                    self.curr_time = time()
+                    self.dt = self.curr_time - self.prev_time
                     self.get_logger().info("Телеметрия получена")
+                    self.prev_time = time()
                     print(telemetry_data)
 
                     Imu_msg = Imu_converter(telemetry_data)
@@ -156,7 +197,12 @@ class Protocol_stm32_node(Node):
                     Speed_msg = Speed_converter(telemetry_data)
                     NavSatFix_msg = Nav_converter(telemetry_data)
                     Course_msg = Course_converter(telemetry_data)
-                    
+                    odom_dict = Odometry_converter(telemetry_data, self.dt, self.x, self.y)
+                    Odometry_msg = odom_dict['odometry_msg']
+                    self.x = odom_dict['x_new']
+                    self.y = odom_dict['y_new']
+
+
                     self.imu_publisher_.publish(Imu_msg)
                     self.get_logger().info('Imu.msg published')
 
@@ -171,6 +217,12 @@ class Protocol_stm32_node(Node):
 
                     self.course_publisher_.publish(Course_msg)
                     self.get_logger().info('ParameterValue.msg for course published')
+
+                    self.odometry_publisher_.publish(Odometry_msg)
+                    self.get_logger().info('Odometry.msg published')
+
+                    self.get_logger().info('-------------------------------------------')
+
                     sleep(1)
             finally:
                 self.get_logger().info("Ошибка")
