@@ -27,7 +27,7 @@ class Heartbeat_node(Node):
             while True:
                 try:
                     Heartbeat_Response(client_socket)
-                    self.get_logger().info(f"heartbeat отправлен -- {str(self.seconds)} секунд")
+                    self.get_logger().info(f"heartbeat отправлен --> {str(self.seconds // 3600)} часов {str(self.seconds // 60)} минут {str(self.seconds%60)} секунд")
                     time.sleep(0.3)
                     self.seconds += 0.3
                 finally:

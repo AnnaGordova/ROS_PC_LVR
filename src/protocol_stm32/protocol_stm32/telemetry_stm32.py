@@ -10,6 +10,7 @@ from rcl_interfaces.msg import ParameterValue
 import numpy as np
 from math import radians, cos, sin
 from time import sleep, time
+from math import pi as Pi
 
 def rad_per_sec(grad_per_sec):
     """Переводит градусы в секеунду в радианы в секунду"""
@@ -98,10 +99,23 @@ def Course_converter(td):
 def Odometry_converter(td, dt, prev_x, prev_y):
     """ Получает на вход словарь телеметрии, интервал времени и предыдщие значения
     положения в пространстве. Возвращает Odometry.msg и новые координаты в пространстве"""
-    v_left = td['fl_speed']
+
+    def MeterPerSec(v):
+        """Принимает на вход скорость в тиках в секунду и переводит ее в тики в секунду"""
+        D = 0.25  # диаметр колеса в метрах
+        # 210 - колиечство тиков на оборот
+        return v * ((Pi * D)/210)
+
+    v_left = td['fl_speed'] #скорость в тиках в секунду
     v_right = td['fr_speed']
+    cmd = td['fr_cmd']
+    print(f'команда на правое колесо в тиках {cmd}')
+    print(f'v_left in tics = {v_left}')
+    v_left = MeterPerSec(v_left)
+    v_right = MeterPerSec(v_right)
+    print(f'v_left in meters = {v_left}')
     yaw = td['yaw']
-    v = (v_left + v_right) / 2 #УЗНАТЬ ЕДИНИЦЫ ИЗМЕРЕНИЯ СКОРОСТЕЙ И ПЕРЕВЕСТИ В М/С!!
+    v = (v_left + v_right) / 2 
 
     x = prev_x + v*cos(yaw)*dt
     y = prev_y + v*sin(yaw)*dt
@@ -162,21 +176,12 @@ class Protocol_stm32_node(Node):
         self.x = 0.
         self.y = 0.
         self.L = 0.58 #58 см - расстояние между колесами
+
         '''
         H - uint8_t
         f - float
         h - int16_t
         '''
-
-        
-        '''
-        self.format_type = "=H"
-        self.format_heartbeat = "=H"
-        self.format_motors = "=Hffff"
-        self.format_telemetry_request = "=H"
-        self.format_unknown_packet = "=H"  '''
-
-
 
     def spin(self):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
@@ -197,10 +202,13 @@ class Protocol_stm32_node(Node):
                     Speed_msg = Speed_converter(telemetry_data)
                     NavSatFix_msg = Nav_converter(telemetry_data)
                     Course_msg = Course_converter(telemetry_data)
+                    print(f'old_x={self.x}  old_y = {self.y}')
                     odom_dict = Odometry_converter(telemetry_data, self.dt, self.x, self.y)
                     Odometry_msg = odom_dict['odometry_msg']
                     self.x = odom_dict['x_new']
                     self.y = odom_dict['y_new']
+                    print(f'new_x={self.x}  new_y = {self.y}')
+
 
 
                     self.imu_publisher_.publish(Imu_msg)

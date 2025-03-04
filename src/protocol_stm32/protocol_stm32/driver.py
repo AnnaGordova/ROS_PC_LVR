@@ -2,7 +2,8 @@
 import rclpy
 from rclpy.node import Node
 from rcl_interfaces.msg import ParameterValue
-from time import sleep
+from time import sleep, time
+from math import pi as Pi
 
 def Create_msg(v):
     """Создает сообщение типа ParameterValue, на вход получает скорость на колесоо"""
@@ -10,6 +11,13 @@ def Create_msg(v):
     param_value_msg.type = 3  # double тип
     param_value_msg.double_value = v
     return param_value_msg
+
+def TicPerSec(v):
+    """Принимает на вход скорость в метрах в секунду и переводит ее в тики в секунду"""
+    D = 0.25 #диаметр колеса в метрах
+    # 210 - колиечство тиков на оборот
+    return v * (210/(Pi*D))
+
 
 class Driver_node(Node):
     def __init__(self):
@@ -20,12 +28,15 @@ class Driver_node(Node):
         self.br_publisher_ = self.create_publisher(ParameterValue, '/br_cmd_vel', 10)
 
     def spin(self):
-
+        start_time = time()
         while True:
-            fl_msg = Create_msg(100.0)
-            fr_msg = Create_msg(100.0)
-            bl_msg = Create_msg(100.0)
-            br_msg = Create_msg(100.0)
+
+            example_speed = TicPerSec(0.785) # метров в секунду
+
+            fl_msg = Create_msg(example_speed)
+            fr_msg = Create_msg(example_speed)
+            bl_msg = Create_msg(example_speed)
+            br_msg = Create_msg(example_speed)  # двигаться вперед значения с минусом
 
             self.fl_publisher_.publish(fl_msg)
             self.get_logger().info('fl_msg published')
@@ -37,6 +48,12 @@ class Driver_node(Node):
             self.get_logger().info('br_msg published')
             self.get_logger().info("-------------------------")
             sleep(0.01)
+
+            end_time = time()
+            if end_time - start_time >= 5.0:
+                break
+
+
 
 
 
