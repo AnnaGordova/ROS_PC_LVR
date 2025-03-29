@@ -1,0 +1,3 @@
+[console_scripts]
+cloud_converter = lidar_package.cloud_converter:main
+

@@ -1,0 +1,36 @@
+[0.025s] Invoking command in '/home/robot/ros2_ws/build/kiss_icp': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --build /home/robot/ros2_ws/build/kiss_icp -- -j4 -l4
+[0.536s] [35m[1mConsolidate compiler generated dependencies of target kiss_icp_metrics[0m
+[0.536s] [35m[1mConsolidate compiler generated dependencies of target kiss_icp_node[0m
+[0.537s] [35m[1mConsolidate compiler generated dependencies of target kiss_icp_core[0m
+[0.537s] [ 14%] Built target kiss_icp_metrics
+[0.537s] [ 28%] Built target kiss_icp_node
+[0.537s] [ 71%] Built target kiss_icp_core
+[0.538s] [35m[1mConsolidate compiler generated dependencies of target kiss_icp_pipeline[0m
+[0.538s] [ 85%] Built target kiss_icp_pipeline
+[0.538s] [35m[1mConsolidate compiler generated dependencies of target odometry_component[0m
+[0.538s] [100%] Built target odometry_component
+[0.539s] Invoked command in '/home/robot/ros2_ws/build/kiss_icp' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --build /home/robot/ros2_ws/build/kiss_icp -- -j4 -l4
+[0.550s] Invoking command in '/home/robot/ros2_ws/build/kiss_icp': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --install /home/robot/ros2_ws/build/kiss_icp
+[0.564s] -- Install configuration: "Release"
+[0.565s] -- Execute custom install script
+[0.565s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/lib/kiss_icp/kiss_icp_node
+[0.565s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/lib/libodometry_component.so
+[0.565s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp//launch/odometry.launch.py
+[0.565s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp//rviz/kiss_icp.rviz
+[0.566s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/package_run_dependencies/kiss_icp
+[0.566s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/parent_prefix_path/kiss_icp
+[0.567s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/ament_prefix_path.sh
+[0.567s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/ament_prefix_path.dsv
+[0.568s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/path.sh
+[0.568s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/path.dsv
+[0.568s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.bash
+[0.568s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.sh
+[0.569s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.zsh
+[0.569s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.dsv
+[0.570s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/package.dsv
+[0.583s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/packages/kiss_icp
+[0.583s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/rclcpp_components/kiss_icp
+[0.584s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig.cmake
+[0.584s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig-version.cmake
+[0.585s] -- Up-to-date symlink: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/package.xml
+[0.588s] Invoked command in '/home/robot/ros2_ws/build/kiss_icp' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --install /home/robot/ros2_ws/build/kiss_icp

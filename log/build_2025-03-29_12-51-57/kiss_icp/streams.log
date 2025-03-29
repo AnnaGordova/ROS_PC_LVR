@@ -1,0 +1,87 @@
+[0.020s] Invoking command in '/home/robot/ros2_ws/build/kiss_icp': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake /home/robot/ros2_ws/src/kiss-icp/ros -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/robot/ros2_ws/install/kiss_icp
+[0.289s] -- The CXX compiler identification is GNU 11.4.0
+[0.290s] -- Detecting CXX compiler ABI info
+[0.376s] -- Detecting CXX compiler ABI info - done
+[0.384s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.385s] -- Detecting CXX compile features
+[0.385s] -- Detecting CXX compile features - done
+[1.998s] -- The C compiler identification is GNU 11.4.0
+[2.016s] -- Detecting C compiler ABI info
+[2.229s] -- Detecting C compiler ABI info - done
+[2.261s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.264s] -- Detecting C compile features
+[2.265s] -- Detecting C compile features - done
+[2.274s] -- Turning basic logging ON
+[3.791s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[4.098s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[4.234s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[4.278s] -- Found geometry_msgs: 4.2.4 (/opt/ros/humble/share/geometry_msgs/cmake)
+[4.400s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[4.412s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[4.428s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[4.453s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[4.520s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.629s] -- Found nav_msgs: 4.2.4 (/opt/ros/humble/share/nav_msgs/cmake)
+[4.702s] -- Found rclcpp: 16.0.11 (/opt/ros/humble/share/rclcpp/cmake)
+[4.809s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[4.814s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[5.032s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[5.123s] -- Found FastRTPS: /opt/ros/humble/include  
+[5.263s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[5.281s] -- Looking for C++ include pthread.h
+[5.594s] -- Looking for C++ include pthread.h - found
+[5.594s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[5.800s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[5.803s] -- Found Threads: TRUE  
+[5.893s] -- Found rclcpp_components: 16.0.11 (/opt/ros/humble/share/rclcpp_components/cmake)
+[6.008s] -- Found sensor_msgs: 4.2.4 (/opt/ros/humble/share/sensor_msgs/cmake)
+[6.096s] -- Found tf2_ros: 0.25.9 (/opt/ros/humble/share/tf2_ros/cmake)
+[6.622s] -- Configuring done
+[6.698s] -- Generating done
+[6.712s] -- Build files have been written to: /home/robot/ros2_ws/build/kiss_icp
+[6.739s] Invoked command in '/home/robot/ros2_ws/build/kiss_icp' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake /home/robot/ros2_ws/src/kiss-icp/ros -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/robot/ros2_ws/install/kiss_icp
+[6.743s] Invoking command in '/home/robot/ros2_ws/build/kiss_icp': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --build /home/robot/ros2_ws/build/kiss_icp -- -j4 -l4
+[6.848s] [  7%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/kiss_icp_core.dir/Registration.cpp.o[0m
+[6.849s] [ 14%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/kiss_icp_core.dir/VoxelHashMap.cpp.o[0m
+[6.857s] [ 21%] [32mBuilding CXX object CMakeFiles/kiss_icp_node.dir/rclcpp_components/node_main_kiss_icp_node.cpp.o[0m
+[6.864s] [ 28%] [32mBuilding CXX object kiss_icp/metrics/CMakeFiles/kiss_icp_metrics.dir/Metrics.cpp.o[0m
+[14.361s] [ 35%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/kiss_icp_core.dir/VoxelUtils.cpp.o[0m
+[18.026s] [ 42%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/kiss_icp_core.dir/Preprocessing.cpp.o[0m
+[18.095s] [ 50%] [32m[1mLinking CXX executable kiss_icp_node[0m
+[18.545s] [ 50%] Built target kiss_icp_node
+[18.580s] [ 57%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/kiss_icp_core.dir/Threshold.cpp.o[0m
+[24.984s] [ 64%] [32m[1mLinking CXX static library libkiss_icp_core.a[0m
+[25.042s] [ 64%] Built target kiss_icp_core
+[25.072s] [ 71%] [32mBuilding CXX object kiss_icp/pipeline/CMakeFiles/kiss_icp_pipeline.dir/KissICP.cpp.o[0m
+[26.932s] [ 78%] [32m[1mLinking CXX static library libkiss_icp_pipeline.a[0m
+[26.966s] [ 78%] Built target kiss_icp_pipeline
+[26.989s] [ 85%] [32mBuilding CXX object CMakeFiles/odometry_component.dir/src/OdometryServer.cpp.o[0m
+[31.871s] [ 92%] [32m[1mLinking CXX static library libkiss_icp_metrics.a[0m
+[31.906s] [ 92%] Built target kiss_icp_metrics
+[45.426s] [100%] [32m[1mLinking CXX shared library libodometry_component.so[0m
+[45.719s] [100%] Built target odometry_component
+[45.730s] Invoked command in '/home/robot/ros2_ws/build/kiss_icp' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --build /home/robot/ros2_ws/build/kiss_icp -- -j4 -l4
+[45.732s] Invoking command in '/home/robot/ros2_ws/build/kiss_icp': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --install /home/robot/ros2_ws/build/kiss_icp
+[45.739s] -- Install configuration: "Release"
+[45.740s] -- Execute custom install script
+[45.740s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/lib/kiss_icp/kiss_icp_node
+[45.749s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/lib/libodometry_component.so
+[45.758s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp//launch/odometry.launch.py
+[45.767s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp//rviz/kiss_icp.rviz
+[45.775s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/package_run_dependencies/kiss_icp
+[45.784s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/parent_prefix_path/kiss_icp
+[45.793s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/ament_prefix_path.sh
+[45.801s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/ament_prefix_path.dsv
+[45.810s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/path.sh
+[45.819s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/environment/path.dsv
+[45.827s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.bash
+[45.836s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.sh
+[45.845s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.zsh
+[45.853s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/local_setup.dsv
+[45.862s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/package.dsv
+[45.870s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/packages/kiss_icp
+[45.879s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/ament_index/resource_index/rclcpp_components/kiss_icp
+[45.888s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig.cmake
+[45.896s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig-version.cmake
+[45.905s] -- Symlinking: /home/robot/ros2_ws/install/kiss_icp/share/kiss_icp/package.xml
+[45.916s] Invoked command in '/home/robot/ros2_ws/build/kiss_icp' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/robot/ros2_ws/install/protocol_stm32:/opt/ros/humble /usr/bin/cmake --install /home/robot/ros2_ws/build/kiss_icp

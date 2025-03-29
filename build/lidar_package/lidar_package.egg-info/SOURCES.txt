@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+lidar_package/__init__.py
+lidar_package/cloud_converter.py
+lidar_package.egg-info/PKG-INFO
+lidar_package.egg-info/SOURCES.txt
+lidar_package.egg-info/dependency_links.txt
+lidar_package.egg-info/entry_points.txt
+lidar_package.egg-info/requires.txt
+lidar_package.egg-info/top_level.txt
+lidar_package.egg-info/zip-safe
+resource/lidar_package

@@ -1,0 +1,21 @@
+running develop
+running egg_info
+creating lidar_package.egg-info
+writing lidar_package.egg-info/PKG-INFO
+writing dependency_links to lidar_package.egg-info/dependency_links.txt
+writing entry points to lidar_package.egg-info/entry_points.txt
+writing requirements to lidar_package.egg-info/requires.txt
+writing top-level names to lidar_package.egg-info/top_level.txt
+writing manifest file 'lidar_package.egg-info/SOURCES.txt'
+reading manifest file 'lidar_package.egg-info/SOURCES.txt'
+writing manifest file 'lidar_package.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/robot/ros2_ws/install/lidar_package/lib/python3.10/site-packages/lidar-package.egg-link (link to .)
+
+Installed /home/robot/ros2_ws/build/lidar_package
+running symlink_data
+creating /home/robot/ros2_ws/install/lidar_package/share/ament_index
+creating /home/robot/ros2_ws/install/lidar_package/share/ament_index/resource_index
+creating /home/robot/ros2_ws/install/lidar_package/share/ament_index/resource_index/packages
+symbolically linking /home/robot/ros2_ws/build/lidar_package/resource/lidar_package -> /home/robot/ros2_ws/install/lidar_package/share/ament_index/resource_index/packages
+symbolically linking /home/robot/ros2_ws/build/lidar_package/package.xml -> /home/robot/ros2_ws/install/lidar_package/share/lidar_package
